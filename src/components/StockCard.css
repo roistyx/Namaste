@@ -1,0 +1,237 @@
+/* ── Outer wrapper (card + collapsible panel) ── */
+.stock-card-outer {
+  display: flex;
+  flex-direction: column;
+  animation: slideIn 0.4s ease both;
+}
+
+.stock-card {
+  display: grid;
+  grid-template-columns: 2rem 1fr 1fr 1fr auto;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: #14162a;
+  border: 1px solid #1e2140;
+  border-radius: 12px;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.stock-card-outer:has(.petri-panel) .stock-card {
+  border-radius: 12px 12px 0 0;
+  border-bottom-color: transparent;
+}
+
+.stock-card:hover {
+  border-color: #2a2f58;
+  transform: translateY(-2px);
+}
+
+.stock-card-outer:has(.petri-panel) .stock-card:hover {
+  transform: none;
+}
+
+/* ── Expand button ── */
+.expand-btn {
+  background: none;
+  border: 1px solid #1e2140;
+  border-radius: 6px;
+  color: #3a4070;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0.2rem 0.4rem;
+  transition: color 0.2s, border-color 0.2s, transform 0.25s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.expand-btn:hover {
+  color: #6670c0;
+  border-color: #3a3f6b;
+}
+
+.expand-btn.open {
+  transform: rotate(180deg);
+  color: #6670c0;
+  border-color: #3a3f6b;
+}
+
+/* ── Petri panel ── */
+.petri-panel {
+  background: #0f1120;
+  border: 1px solid #1e2140;
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+  padding: 0 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  animation: panelOpen 0.3s ease both;
+}
+
+@keyframes panelOpen {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.petri-panel-label {
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #2a3a2e;
+  align-self: flex-start;
+  padding-top: 0.75rem;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.card-rank {
+  font-size: 0.72rem;
+  color: #4a5080;
+  font-weight: 600;
+  text-align: center;
+}
+
+.card-identity {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.ticker {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #e8eaf6;
+  letter-spacing: 0.04em;
+}
+
+.card-volume {
+  font-size: 0.68rem;
+  color: #5a6080;
+}
+
+.card-price {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.price {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #c8cadf;
+}
+
+.change {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.change.pos { color: #00c896; }
+.change.neg { color: #ff4d6d; }
+
+.card-sentiment {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  min-height: 60px;
+  justify-content: center;
+}
+
+.sentiment-loading {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.spinner {
+  width: 12px;
+  height: 12px;
+  border: 2px solid #3a3f6b;
+  border-top-color: #6670c0;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.sentiment-icon {
+  font-size: 0.7rem;
+}
+
+.sentiment-label-text {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #a0a8c0;
+  letter-spacing: 0.06em;
+}
+
+.sentiment-score {
+  font-size: 0.7rem;
+  font-weight: 600;
+  opacity: 0.85;
+}
+
+.sentiment-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  width: 100%;
+}
+
+.score-bar-track {
+  position: relative;
+  width: 100%;
+  height: 4px;
+  background: #1e2140;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.score-bar-fill {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.6s ease;
+}
+
+.score-bar-center {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 1px;
+  height: 100%;
+  background: #3a3f6b;
+}
+
+.articles-count {
+  font-size: 0.62rem;
+  color: #4a5080;
+}
+
+.sentiment-na {
+  font-size: 0.75rem;
+  color: #4a5080;
+}
+
+@media (max-width: 600px) {
+  .stock-card {
+    grid-template-columns: 2rem 1fr 1fr auto;
+    grid-template-rows: auto auto;
+  }
+  .card-sentiment {
+    grid-column: 1 / -2;
+  }
+}

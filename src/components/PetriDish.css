@@ -1,0 +1,84 @@
+.petri-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1rem 0 0.5rem;
+}
+
+/* ── Loading / empty states ── */
+.petri-state {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1.5rem 1rem;
+  font-size: 0.78rem;
+  color: #3a4a3e;
+  justify-content: center;
+}
+
+.petri-empty {
+  color: #2e3830;
+}
+
+.petri-spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid #1a2e1e;
+  border-top-color: #3a8050;
+  border-radius: 50%;
+  animation: petri-spin 0.9s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes petri-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── SVG dish ── */
+.petri-wrap svg {
+  filter: drop-shadow(0 0 18px rgba(0, 160, 60, 0.12));
+  overflow: visible;
+}
+
+/* ── Bar chart ── */
+.petri-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  height: 60px;
+  padding: 0 0.25rem;
+}
+
+.petri-bar-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  justify-content: flex-end;
+  height: 100%;
+}
+
+.petri-pct {
+  font-size: 0.58rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.petri-pct.pos { color: #00c896; }
+.petri-pct.neg { color: #ff4d6d; }
+
+.petri-bar {
+  width: 18px;
+  border-radius: 3px 3px 0 0;
+  opacity: 0.85;
+  transition: opacity 0.2s;
+}
+.petri-bar-col:hover .petri-bar { opacity: 1; }
+
+.petri-bar-day {
+  font-size: 0.6rem;
+  color: #3a4a3e;
+  font-family: monospace;
+}
