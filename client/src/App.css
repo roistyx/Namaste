@@ -1,10 +1,11 @@
 /* ── Layout ─────────────────────────────────────────── */
 .app {
   min-height: 100vh;
-  background: #0b0d1a;
-  color: #c8cadf;
+  background: var(--bg);
+  color: var(--text);
   font-family: 'Inter', system-ui, sans-serif;
   padding: 0 0 4rem;
+  transition: background 0.25s ease, color 0.25s ease;
 }
 
 /* ── Header ─────────────────────────────────────────── */
@@ -26,7 +27,7 @@
   font-size: clamp(2rem, 5vw, 3.2rem);
   font-weight: 800;
   letter-spacing: -0.03em;
-  color: #e8eaf6;
+  color: var(--text-hi);
   margin: 0 0 0.5rem;
 }
 
@@ -39,7 +40,7 @@
 
 .app-subtitle {
   font-size: 0.95rem;
-  color: #5a6080;
+  color: var(--text-mid);
   margin: 0;
 }
 
@@ -58,10 +59,10 @@
   flex: 1;
   min-width: 200px;
   padding: 0.65rem 1rem;
-  background: #14162a;
-  border: 1px solid #1e2140;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
   border-radius: 10px;
-  color: #e8eaf6;
+  color: var(--text-hi);
   font-size: 0.9rem;
   outline: none;
   transition: border-color 0.2s;
@@ -72,7 +73,7 @@
 }
 
 .api-input::placeholder {
-  color: #3a3f6b;
+  color: var(--text-dim);
 }
 
 .fetch-btn {
@@ -111,7 +112,7 @@
 
 .key-link {
   font-size: 0.78rem;
-  color: #4a5080;
+  color: var(--text-lo);
   text-decoration: none;
   white-space: nowrap;
   transition: color 0.2s;
@@ -138,14 +139,14 @@
   align-items: center;
   gap: 1rem;
   padding: 3rem 1rem;
-  color: #4a5080;
+  color: var(--text-lo);
   font-size: 0.9rem;
 }
 
 .pulse-ring {
   width: 44px;
   height: 44px;
-  border: 3px solid #1e2140;
+  border: 3px solid var(--border);
   border-top-color: #6366f1;
   border-radius: 50%;
   animation: spin 0.9s linear infinite;
@@ -186,7 +187,7 @@
 .section-title {
   font-size: 0.85rem;
   font-weight: 600;
-  color: #5a6080;
+  color: var(--text-mid);
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
@@ -200,7 +201,7 @@
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #3a3f6b;
+  color: var(--text-dim);
   margin-bottom: 0.5rem;
 }
 
@@ -213,13 +214,13 @@
 .rate-note {
   margin-top: 1rem;
   font-size: 0.75rem;
-  color: #3a3f6b;
+  color: var(--text-dim);
   text-align: center;
 }
 
 .empty-state {
   text-align: center;
-  color: #3a3f6b;
+  color: var(--text-dim);
   font-size: 0.9rem;
   padding: 3rem 1rem;
 }

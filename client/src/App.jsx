@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { getMostActive, getSentiment } from './api/finnhub';
+import { getMostActive, getSentiment } from './api/stocks';
 import StockCard from './components/StockCard';
+import HamburgerMenu from './components/HamburgerMenu';
+import ThemeToggle from './components/ThemeToggle';
+import PositionsPage from './components/PositionsPage';
 import './App.css';
 
-const ENV_KEY = import.meta.env.VITE_FINNHUB_API_KEY || '';
-
-export default function App() {
+function Dashboard() {
   const [stocks, setStocks] = useState([]);
   const [sentiments, setSentiments] = useState({});
   const [loadingStocks, setLoadingStocks] = useState(false);
@@ -14,7 +15,6 @@ export default function App() {
   const [started, setStarted] = useState(false);
 
   async function handleFetch() {
-    if (!ENV_KEY.trim()) { setError('API key not configured.'); return; }
     setError('');
     setLoadingStocks(true);
     setStocks([]);
@@ -48,7 +48,7 @@ export default function App() {
   }
 
   return (
-    <div className="app">
+    <>
       <header className="app-header">
         <div className="header-glow" />
         <h1 className="app-title">
@@ -120,6 +120,18 @@ export default function App() {
       {started && !loadingStocks && stocks.length === 0 && !error && (
         <p className="empty-state">No data returned. Markets may be closed or key is invalid.</p>
       )}
+    </>
+  );
+}
+
+export default function App() {
+  const [page, setPage] = useState('Dashboard');
+
+  return (
+    <div className="app">
+      <HamburgerMenu active={page} onNavigate={setPage} />
+      <ThemeToggle />
+      {page === 'Positions' ? <PositionsPage /> : <Dashboard />}
     </div>
   );
 }

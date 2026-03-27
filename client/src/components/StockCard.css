@@ -11,10 +11,10 @@
   align-items: center;
   gap: 1rem;
   padding: 1rem 1.25rem;
-  background: #14162a;
-  border: 1px solid #1e2140;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
   border-radius: 12px;
-  transition: border-color 0.2s, transform 0.2s;
+  transition: border-color 0.2s, transform 0.2s, background 0.25s;
 }
 
 .stock-card-outer:has(.petri-panel) .stock-card {
@@ -23,7 +23,7 @@
 }
 
 .stock-card:hover {
-  border-color: #2a2f58;
+  border-color: var(--border-hover);
   transform: translateY(-2px);
 }
 
@@ -34,9 +34,9 @@
 /* ── Expand button ── */
 .expand-btn {
   background: none;
-  border: 1px solid #1e2140;
+  border: 1px solid var(--border);
   border-radius: 6px;
-  color: #3a4070;
+  color: var(--text-btn-dim);
   cursor: pointer;
   font-size: 1rem;
   line-height: 1;
@@ -48,20 +48,20 @@
 }
 
 .expand-btn:hover {
-  color: #6670c0;
-  border-color: #3a3f6b;
+  color: var(--text-btn-hvr);
+  border-color: var(--text-dim);
 }
 
 .expand-btn.open {
   transform: rotate(180deg);
-  color: #6670c0;
-  border-color: #3a3f6b;
+  color: var(--text-btn-hvr);
+  border-color: var(--text-dim);
 }
 
 /* ── Petri panel ── */
 .petri-panel {
-  background: #0f1120;
-  border: 1px solid #1e2140;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
   border-top: none;
   border-radius: 0 0 12px 12px;
   padding: 0 1rem 1rem;
@@ -70,6 +70,7 @@
   align-items: center;
   gap: 0.25rem;
   animation: panelOpen 0.3s ease both;
+  transition: background 0.25s;
 }
 
 @keyframes panelOpen {
@@ -94,7 +95,7 @@
 
 .card-rank {
   font-size: 0.72rem;
-  color: #4a5080;
+  color: var(--text-lo);
   font-weight: 600;
   text-align: center;
 }
@@ -108,13 +109,13 @@
 .ticker {
   font-size: 1rem;
   font-weight: 700;
-  color: #e8eaf6;
+  color: var(--text-hi);
   letter-spacing: 0.04em;
 }
 
 .card-volume {
   font-size: 0.68rem;
-  color: #5a6080;
+  color: var(--text-mid);
 }
 
 .card-price {
@@ -126,7 +127,7 @@
 .price {
   font-size: 1rem;
   font-weight: 600;
-  color: #c8cadf;
+  color: var(--text);
 }
 
 .change {
@@ -156,7 +157,7 @@
 .spinner {
   width: 12px;
   height: 12px;
-  border: 2px solid #3a3f6b;
+  border: 2px solid var(--text-dim);
   border-top-color: #6670c0;
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
@@ -173,7 +174,7 @@
 .sentiment-label-text {
   font-size: 0.8rem;
   font-weight: 700;
-  color: #a0a8c0;
+  color: var(--text);
   letter-spacing: 0.06em;
 }
 
@@ -194,7 +195,7 @@
   position: relative;
   width: 100%;
   height: 4px;
-  background: #1e2140;
+  background: var(--border);
   border-radius: 4px;
   overflow: hidden;
 }
@@ -213,17 +214,17 @@
   top: 0;
   width: 1px;
   height: 100%;
-  background: #3a3f6b;
+  background: var(--text-dim);
 }
 
 .articles-count {
   font-size: 0.62rem;
-  color: #4a5080;
+  color: var(--text-lo);
 }
 
 .sentiment-na {
   font-size: 0.75rem;
-  color: #4a5080;
+  color: var(--text-lo);
 }
 
 @media (max-width: 600px) {

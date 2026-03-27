@@ -1,0 +1,341 @@
+/* ── Page shell ─────────────────────────────────────── */
+.positions-page {
+  max-width: 1020px;
+  margin: 0 auto;
+  padding: 0 1rem 4rem;
+}
+
+/* ── Page header ────────────────────────────────────── */
+.pos-page-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 3.5rem 0 1.5rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 1.5rem;
+}
+
+.pos-page-title {
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--text-hi);
+  margin: 0;
+}
+
+.pos-page-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.15rem;
+}
+
+.pos-page-total {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-hi);
+  font-variant-numeric: tabular-nums;
+}
+
+.pos-page-count {
+  font-size: 0.75rem;
+  color: var(--text-mid);
+}
+
+/* ── Loading / error ────────────────────────────────── */
+.pos-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 6rem 1rem;
+  color: var(--text-lo);
+  font-size: 0.9rem;
+}
+
+.pos-error {
+  max-width: 560px;
+  margin: 3rem auto;
+  padding: 0.75rem 1rem;
+  background: rgba(255,77,109,0.1);
+  border: 1px solid rgba(255,77,109,0.25);
+  border-radius: 10px;
+  color: #ff4d6d;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+/* ── Account section ────────────────────────────────── */
+.pos-page-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.account-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: background 0.25s;
+}
+
+.account-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 1rem 1.25rem 0.75rem;
+}
+
+.account-title-group {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.account-type-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-hi);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.account-id {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  font-family: monospace;
+  background: var(--bg-panel);
+  padding: 0.15rem 0.45rem;
+  border-radius: 5px;
+}
+
+.account-figures {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.1rem;
+}
+
+.account-total {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-hi);
+  font-variant-numeric: tabular-nums;
+}
+
+.account-bp {
+  font-size: 0.7rem;
+  color: var(--text-mid);
+}
+
+/* ── Equity bar ─────────────────────────────────────── */
+.equity-bar {
+  display: flex;
+  height: 4px;
+  overflow: hidden;
+  margin: 0.5rem 1.25rem 0;
+  border-radius: 4px;
+  gap: 2px;
+}
+
+.equity-segment {
+  border-radius: 4px;
+  transition: opacity 0.2s;
+}
+
+.equity-segment:hover {
+  opacity: 0.8;
+}
+
+.equity-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.6rem 1.25rem 0.85rem;
+}
+
+.equity-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.68rem;
+  color: var(--text-mid);
+  font-weight: 500;
+}
+
+.pill-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.pill-pct {
+  color: var(--text-dim);
+}
+
+/* ── Positions table ────────────────────────────────── */
+.pos-table-wrap {
+  overflow-x: auto;
+  border-top: 1px solid var(--border);
+}
+
+.pos-table {
+  display: grid;
+  grid-template-columns: 7rem 1fr 6rem 6rem 7rem 9rem 9rem;
+  min-width: 640px;
+}
+
+.pos-row {
+  display: contents;
+}
+
+.pos-row > * {
+  display: flex;
+  align-items: center;
+  padding: 0.6rem 0.75rem;
+  font-size: 0.82rem;
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+
+/* Highlight full row on hover via sibling trick */
+.pos-row:not(.pos-header):hover > * {
+  background: var(--bg-panel);
+}
+
+/* ── Sortable column headers ────────────────────────── */
+.col-header {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  background: var(--bg-panel);
+  border: none;
+  border-bottom: 1px solid var(--border);
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.15s, background 0.15s;
+  font-family: inherit;
+}
+
+.col-header:hover {
+  color: var(--text);
+  background: var(--bg-hover);
+}
+
+.col-header--active {
+  color: #818cf8;
+}
+
+.col-header--active:hover {
+  color: #818cf8;
+}
+
+.sort-icon {
+  font-size: 0.6rem;
+  line-height: 1;
+}
+
+.sort-idle {
+  color: var(--text-dimmer);
+  opacity: 0.6;
+}
+
+.sort-active {
+  color: #818cf8;
+}
+
+.pos-row:last-child > * {
+  border-bottom: none;
+}
+
+.num {
+  justify-content: flex-end;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Symbol cell ────────────────────────────────────── */
+.pos-symbol-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.pos-symbol {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-hi);
+  letter-spacing: 0.03em;
+}
+
+.pos-type-badge {
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid;
+  border-radius: 4px;
+  padding: 0.05rem 0.3rem;
+  width: fit-content;
+  opacity: 0.85;
+}
+
+/* ── Name cell ──────────────────────────────────────── */
+.pos-name-col {
+  min-width: 0;
+}
+
+.pos-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--text-mid);
+  font-size: 0.8rem;
+}
+
+/* ── Qty / value ────────────────────────────────────── */
+.pos-qty {
+  color: var(--text-mid);
+}
+
+.pos-value {
+  font-weight: 600;
+  color: var(--text-hi);
+}
+
+/* ── Gain cells ─────────────────────────────────────── */
+.gain-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.1rem;
+}
+
+.gain-cell.pos { color: #00c896; }
+.gain-cell.neg { color: #ff4d6d; }
+
+.gain-dollar {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.gain-pct {
+  font-size: 0.68rem;
+  opacity: 0.8;
+}
+
+.na {
+  color: var(--text-dim);
+}

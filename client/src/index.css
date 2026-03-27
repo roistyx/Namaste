@@ -1,0 +1,57 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* ── Theme tokens ───────────────────────────────────── */
+:root {
+  --bg:           #0b0d1a;
+  --bg-card:      #14162a;
+  --bg-panel:     #0f1120;
+  --bg-sidebar:   #0e1020;
+  --bg-hover:     #1a1d38;
+  --border:       #1e2140;
+  --border-sub:   #1a1d35;
+  --border-hover: #2a2f58;
+  --text-hi:      #e8eaf6;
+  --text:         #c8cadf;
+  --text-mid:     #5a6080;
+  --text-lo:      #4a5080;
+  --text-dim:     #3a3f6b;
+  --text-dimmer:  #2a2f50;
+  --text-btn-dim: #3a4070;
+  --text-btn-hvr: #6670c0;
+}
+
+[data-theme="light"] {
+  --bg:           #f2f4ff;
+  --bg-card:      #ffffff;
+  --bg-panel:     #edf0fa;
+  --bg-sidebar:   #f8f9ff;
+  --bg-hover:     #eef0fc;
+  --border:       #d4d8f0;
+  --border-sub:   #e0e4f4;
+  --border-hover: #b0b8e0;
+  --text-hi:      #1a1c30;
+  --text:         #3a3f6b;
+  --text-mid:     #6a70a0;
+  --text-lo:      #7a80b0;
+  --text-dim:     #9098c0;
+  --text-dimmer:  #b0b8d8;
+  --text-btn-dim: #8890c0;
+  --text-btn-hvr: #6366f1;
+}
+
+html {
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  width: 100%;
+}

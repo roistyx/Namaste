@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { getWeeklyData } from '../api/finnhub';
+import { getWeeklyData } from '../api/stocks';
 import PetriDish from './PetriDish';
 import './StockCard.css';
 
