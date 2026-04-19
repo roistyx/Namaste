@@ -1,0 +1,215 @@
+/* ── Page shell ─────────────────────────────────────── */
+.alerts-page {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 1rem 4rem;
+}
+
+.alerts-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.alerts-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.alerts-subtitle {
+  font-size: 0.78rem;
+  color: var(--text-mid);
+  margin-top: 0.2rem;
+}
+
+.alerts-refresh-btn {
+  padding: 0.45rem 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  transition: background 0.15s;
+  font-family: inherit;
+}
+
+.alerts-refresh-btn:hover {
+  background: var(--surface-hover, #2a2a3a);
+}
+
+/* ── Alert list ─────────────────────────────────────── */
+.alerts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.alert-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  transition: opacity 0.2s;
+}
+
+.alert-card--volume { border-left: 3px solid #f59e0b; }
+.alert-card--price  { border-left: 3px solid #f87171; }
+.alert-card--both   { border-left: 3px solid #a78bfa; }
+
+.alert-icon {
+  font-size: 1.3rem;
+  line-height: 1;
+  margin-top: 0.1rem;
+  flex-shrink: 0;
+}
+
+.alert-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.alert-top {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.3rem;
+}
+
+.alert-ticker {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.alert-type-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.alert-type-badge--volume { background: rgba(245,158,11,0.18); color: #f59e0b; }
+.alert-type-badge--price  { background: rgba(248,113,113,0.18); color: #f87171; }
+.alert-type-badge--both   { background: rgba(167,139,250,0.18); color: #a78bfa; }
+
+.alert-ts {
+  font-size: 0.72rem;
+  color: var(--text-dim, #666);
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.alert-message {
+  font-size: 0.83rem;
+  color: var(--text-mid);
+  line-height: 1.45;
+}
+
+.alert-stats {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.alert-stat {
+  font-size: 0.75rem;
+  color: var(--text-dim, #888);
+}
+
+.alert-stat span {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.alert-dismiss-btn {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-mid);
+  font-size: 0.75rem;
+  padding: 0.3rem 0.7rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
+  font-family: inherit;
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.alert-dismiss-btn:hover {
+  background: var(--surface-hover, #2a2a3a);
+  color: var(--text);
+}
+
+/* ── Empty / loading states ─────────────────────────── */
+.alerts-empty {
+  text-align: center;
+  padding: 4rem 1rem;
+  color: var(--text-mid);
+}
+
+.alerts-empty-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.alerts-empty-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  color: var(--text);
+}
+
+.alerts-empty-sub {
+  font-size: 0.82rem;
+}
+
+.alerts-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 3rem;
+  color: var(--text-mid);
+  font-size: 0.85rem;
+}
+
+.alerts-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent, #818cf8);
+  border-radius: 50%;
+  animation: alerts-spin 0.7s linear infinite;
+}
+
+@keyframes alerts-spin {
+  to { transform: rotate(360deg); }
+}
+
+.alerts-error {
+  background: rgba(248, 113, 113, 0.08);
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  border-radius: 10px;
+  padding: 1rem 1.2rem;
+  color: #f87171;
+  font-size: 0.85rem;
+}
+
+.alerts-count {
+  font-size: 0.78rem;
+  color: var(--text-mid);
+  margin-bottom: 1rem;
+}

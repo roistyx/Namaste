@@ -4,6 +4,7 @@ import StockCard from './components/StockCard';
 import HamburgerMenu from './components/HamburgerMenu';
 import ThemeToggle from './components/ThemeToggle';
 import PositionsPage from './components/PositionsPage';
+import AlertsPage from './components/AlertsPage';
 import './App.css';
 
 function Dashboard() {
@@ -131,7 +132,9 @@ export default function App() {
     <div className="app">
       <HamburgerMenu active={page} onNavigate={setPage} />
       <ThemeToggle />
-      {page === 'Positions' ? <PositionsPage /> : <Dashboard />}
+      {page === 'Positions' ? <PositionsPage /> :
+       page === 'Alerts'    ? <AlertsPage />    :
+       <Dashboard />}
     </div>
   );
 }

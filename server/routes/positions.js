@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { addSymbols } from '../volume-alert/dao/symbolDao.js';
 
 const router = Router();
 const BASE = 'https://api.public.com';
@@ -100,6 +101,12 @@ router.get('/', async (req, res) => {
       }
     }),
   );
+
+  const symbols = portfolios.flatMap((acct) => {
+    const positions = acct.portfolio?.positions ?? acct.portfolio?.holdings ?? [];
+    return positions.map((p) => p.symbol ?? p.ticker ?? p.instrument?.symbol).filter(Boolean);
+  });
+  addSymbols(symbols, 'public').catch(() => {});
 
   res.json({ accounts: portfolios });
 });

@@ -124,16 +124,175 @@
   opacity: 0.85;
 }
 
+.connect-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.apex-cookie-input {
+  width: 100%;
+  max-width: 420px;
+  padding: 0.6rem 0.75rem;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: monospace;
+  font-size: 0.78rem;
+  resize: vertical;
+  outline: none;
+  line-height: 1.5;
+}
+
+.apex-cookie-input:focus {
+  border-color: var(--accent);
+}
+
+.apex-cookie-error {
+  font-size: 0.8rem;
+  color: #f87171;
+  margin: 0;
+}
+
+.apex-stale-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background: rgba(251, 191, 36, 0.12);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  font-size: 0.82rem;
+  color: #fbbf24;
+  margin-bottom: 0.75rem;
+}
+
+.apex-stale-btn {
+  background: transparent;
+  border: 1px solid rgba(251, 191, 36, 0.5);
+  border-radius: 6px;
+  color: #fbbf24;
+  font-size: 0.78rem;
+  padding: 0.3rem 0.75rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.apex-stale-btn:hover { background: rgba(251, 191, 36, 0.15); }
+
+.apex-session-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.apex-session-count {
+  font-size: 0.8rem;
+  color: var(--text-muted, #8892a4);
+}
+
+.apex-update-form {
+  background: var(--card-bg, #1e2235);
+  border: 1px solid var(--border, #2a2f45);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  max-width: 560px;
+}
+
+.apex-update-actions {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.apex-cancel-btn {
+  background: transparent;
+  border: 1px solid var(--border, #2a2f45);
+  border-radius: 6px;
+  color: var(--text-muted, #8892a4);
+  font-size: 0.85rem;
+  padding: 0.4rem 0.9rem;
+  cursor: pointer;
+}
+.apex-cancel-btn:hover { background: rgba(255,255,255,0.05); }
+
 /* ── Page header ────────────────────────────────────── */
 .pos-page-header {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 1rem;
   padding: 3.5rem 0 1.5rem;
   border-bottom: 1px solid var(--border);
   margin-bottom: 1.5rem;
+}
+
+.pos-page-title-group {
+  display: flex;
+  align-items: baseline;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+/* ── Search ─────────────────────────────────────────── */
+.pos-search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.pos-search-icon {
+  position: absolute;
+  left: 0.65rem;
+  font-size: 1rem;
+  color: var(--text-mid);
+  pointer-events: none;
+  line-height: 1;
+}
+
+.pos-search-input {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.45rem 2rem 0.45rem 2rem;
+  font-size: 0.82rem;
+  color: var(--text);
+  font-family: inherit;
+  width: 220px;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.pos-search-input::placeholder {
+  color: var(--text-dim, #555);
+}
+
+.pos-search-input:focus {
+  border-color: #818cf8;
+  box-shadow: 0 0 0 2px rgba(129, 140, 248, 0.15);
+}
+
+.pos-search-clear {
+  position: absolute;
+  right: 0.5rem;
+  background: none;
+  border: none;
+  color: var(--text-mid);
+  font-size: 0.7rem;
+  cursor: pointer;
+  padding: 0.2rem;
+  line-height: 1;
+  border-radius: 3px;
+}
+
+.pos-search-clear:hover {
+  color: var(--text);
 }
 
 .pos-page-title {
@@ -222,6 +381,48 @@
   color: var(--text-hi);
   text-transform: uppercase;
   letter-spacing: 0.06em;
+}
+
+.account-label-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-hi);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.account-label-edit-icon {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.account-label-btn:hover .account-label-edit-icon {
+  opacity: 1;
+}
+
+.account-label-input {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-hi);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: var(--bg-panel);
+  border: 1px solid #818cf8;
+  border-radius: 5px;
+  padding: 0.1rem 0.4rem;
+  outline: none;
+  font-family: inherit;
+  width: 14rem;
 }
 
 .account-id {
@@ -404,11 +605,11 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  border: 1px solid;
   border-radius: 4px;
-  padding: 0.05rem 0.3rem;
+  padding: 0.1rem 0.35rem;
   width: fit-content;
-  opacity: 0.85;
+  background: transparent !important;
+  border: 1.5px solid currentColor;
 }
 
 /* ── Name cell ──────────────────────────────────────── */
@@ -457,4 +658,270 @@
 
 .na {
   color: var(--text-dim);
+}
+
+/* ── Symbol clickable ───────────────────────────────── */
+.pos-symbol-cell--clickable {
+  cursor: pointer;
+}
+
+.pos-symbol-cell--clickable:hover .pos-symbol,
+.pos-symbol-cell--expanded .pos-symbol {
+  color: #818cf8;
+}
+
+/* ── Expanded detail row (spans all grid columns) ───── */
+.pos-expanded-row {
+  grid-column: 1 / -1;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-panel);
+}
+
+.pos-expanded-inner {
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+}
+
+.pos-expanded-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+}
+
+.pos-expanded-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 8rem;
+}
+
+.pos-expanded-stat-label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-dim);
+}
+
+.pos-expanded-stat-value {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-hi);
+  font-variant-numeric: tabular-nums;
+}
+
+.detail-pos { color: #00c896; }
+.detail-neg { color: #ff4d6d; }
+
+/* ── Purchase history lots ───────────────────────────── */
+.pos-expanded-lots {
+  flex: 1;
+  min-width: 280px;
+  border-left: 1px solid var(--border);
+  padding-left: 1.25rem;
+}
+
+.pos-expanded-lots-title {
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-dim);
+  margin-bottom: 0.5rem;
+}
+
+.pos-expanded-lots-msg {
+  font-size: 0.8rem;
+  color: var(--text-mid);
+}
+
+.pos-expanded-lots-err {
+  color: #ff4d6d;
+}
+
+.pos-lots-table {
+  display: flex;
+  flex-direction: column;
+}
+
+.pos-lots-header,
+.pos-lots-row {
+  display: grid;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  padding: 0.3rem 0;
+}
+
+.pos-lots-header--full,
+.pos-lots-row--full {
+  grid-template-columns: 6rem 6rem 1fr 5rem 5rem 7rem;
+}
+
+.pos-lots-desc {
+  font-size: 0.75rem;
+  color: var(--text-mid);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pos-lots-header {
+  color: var(--text-dim);
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.35rem;
+  margin-bottom: 0.1rem;
+}
+
+.pos-lots-row {
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+}
+
+.pos-lots-row:last-child {
+  border-bottom: none;
+}
+
+.lots-type-badge {
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+  width: fit-content;
+}
+
+.lots-type--buy {
+  background: rgba(129, 140, 248, 0.12);
+  color: #818cf8;
+}
+
+.lots-type--other {
+  background: var(--bg-panel);
+  color: var(--text-mid);
+}
+
+/* ── Summary row ────────────────────────────────────── */
+.pos-summary-row > * {
+  background: var(--bg-panel);
+  border-bottom: none;
+  border-top: 1px solid var(--border);
+}
+
+.pos-summary-label {
+  display: flex;
+  align-items: center;
+  padding: 0.6rem 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-hi);
+  background: var(--bg-panel);
+  border-top: 1px solid var(--border);
+}
+
+/* ── All-positions tab ──────────────────────────────── */
+.pos-table--all {
+  grid-template-columns: 7rem 1fr 9rem 6rem 6rem 7rem 9rem 9rem;
+}
+
+.all-positions-summary {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 1rem 1.25rem 0.5rem;
+}
+
+.all-positions-total {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-hi);
+}
+
+.all-positions-count {
+  font-size: 0.82rem;
+  color: var(--text-mid);
+}
+
+/* ── Fidelity upload ────────────────────────────────── */
+.fidelity-upload-wrap {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.fidelity-upload-date {
+  font-size: 0.78rem;
+  color: var(--text-mid);
+  margin: 0;
+}
+
+.fidelity-upload-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.85rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: 6px;
+  border: 1.5px solid var(--accent);
+  color: var(--accent);
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.fidelity-upload-btn:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
+.fidelity-upload-btn--loading {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.pos-empty {
+  padding: 2rem 1.25rem;
+  color: var(--text-mid);
+  font-size: 0.88rem;
+}
+
+.stash-upload-controls {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.stash-account-select {
+  appearance: none;
+  background: transparent;
+  border: none;
+  border-right: 1px solid var(--border);
+  padding: 0.75rem 2rem 0.75rem 1.25rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text);
+  font-family: inherit;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%236b7280'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  min-width: 220px;
+}
+
+.stash-account-select:focus {
+  outline: none;
+  color: var(--accent);
+}
+
+.stash-upload-controls .fidelity-upload-wrap {
+  border-bottom: none;
+  flex: 1;
 }

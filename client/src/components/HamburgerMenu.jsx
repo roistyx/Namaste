@@ -6,6 +6,7 @@ const NAV_ITEMS = [
   { icon: '★', label: 'Watchlist' },
   { icon: '◎', label: 'Markets' },
   { icon: '◈', label: 'Positions' },
+  { icon: '🤖', label: 'Alerts' },
   { icon: '⚙', label: 'Settings' },
 ];
 

@@ -1,65 +1,19 @@
 import { Router } from 'express';
+import { getDB } from '../db.js';
+import { addSymbols } from '../volume-alert/dao/symbolDao.js';
+import {
+  CLIENT_ID, CLIENT_SECRET,
+  basicAuth, getAccessToken,
+  setTokens, isAuthorized,
+} from '../schwabClient.js';
 
 const router = Router();
 
 const AUTH_BASE   = 'https://api.schwabapi.com/v1/oauth';
 const TRADER_BASE = 'https://api.schwabapi.com/trader/v1';
 
-const CLIENT_ID    = process.env.SCHWAB_CLIENT_ID     || '';
-const CLIENT_SECRET = process.env.SCHWAB_CLIENT_SECRET || '';
-const REDIRECT_URI  = process.env.SCHWAB_REDIRECT_URI  || 'http://localhost:3001/api/schwab/callback';
-const CLIENT_URL    = process.env.CLIENT_URL            || 'http://localhost:5173';
-
-// ── Token cache ───────────────────────────────────────────────────────────────
-const tokenCache = {
-  accessToken:    null,
-  refreshToken:   process.env.SCHWAB_REFRESH_TOKEN || null,
-  accessExpiresAt: 0,
-};
-
-function basicAuth() {
-  return Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64');
-}
-
-async function exchangeRefreshToken() {
-  if (!tokenCache.refreshToken) {
-    throw Object.assign(new Error('Not authorized — connect your Schwab account first'), { status: 401 });
-  }
-
-  const res = await fetch(`${AUTH_BASE}/token`, {
-    method: 'POST',
-    headers: {
-      'Content-Type':  'application/x-www-form-urlencoded',
-      'Authorization': `Basic ${basicAuth()}`,
-    },
-    body: new URLSearchParams({
-      grant_type:    'refresh_token',
-      refresh_token: tokenCache.refreshToken,
-    }),
-  });
-
-  if (!res.ok) {
-    const detail = await res.text();
-    if (res.status === 401) tokenCache.refreshToken = null; // token revoked
-    throw Object.assign(
-      new Error(`Schwab token refresh failed (${res.status})`),
-      { status: res.status, detail },
-    );
-  }
-
-  const data = await res.json();
-  tokenCache.accessToken    = data.access_token;
-  tokenCache.accessExpiresAt = Date.now() + (data.expires_in - 60) * 1000;
-  if (data.refresh_token) tokenCache.refreshToken = data.refresh_token;
-  return tokenCache.accessToken;
-}
-
-async function getAccessToken() {
-  if (tokenCache.accessToken && Date.now() < tokenCache.accessExpiresAt) {
-    return tokenCache.accessToken;
-  }
-  return exchangeRefreshToken();
-}
+const REDIRECT_URI = process.env.SCHWAB_REDIRECT_URI || 'http://localhost:3001/api/schwab/callback';
+const CLIENT_URL   = process.env.CLIENT_URL           || 'http://localhost:5173';
 
 function sendError(res, err) {
   const status = err.status >= 400 && err.status < 500 ? err.status : 502;
@@ -78,11 +32,15 @@ function normalizeAccount(raw) {
     const gainPct   = costTotal > 0 ? (gainValue / costTotal) * 100 : 0;
 
     const assetType = pos.instrument.assetType;
+    const instType  = pos.instrument.type;
     const type =
-      assetType === 'EQUITY'       ? 'EQUITY'  :
-      assetType === 'OPTION'       ? 'OPTION'  :
-      assetType === 'FIXED_INCOME' ? 'BOND'    :
-      assetType === 'CRYPTO'       ? 'CRYPTO'  : 'EQUITY';
+      assetType === 'COLLECTIVE_INVESTMENT' && instType === 'EXCHANGE_TRADED_FUND' ? 'ETF'         :
+      assetType === 'MUTUAL_FUND'                                                   ? 'MUTUAL_FUND' :
+      assetType === 'CASH_EQUIVALENT'                                               ? 'CASH_EQ'     :
+      assetType === 'EQUITY'                                                        ? 'STOCK'       :
+      assetType === 'OPTION'                                                        ? 'OPTION'      :
+      assetType === 'FIXED_INCOME'                                                  ? 'BOND'        :
+      assetType === 'CRYPTO'                                                        ? 'CRYPTO'      : 'STOCK';
 
     return {
       instrument: {
@@ -93,10 +51,14 @@ function normalizeAccount(raw) {
       quantity:   String(qty),
       lastPrice:  { lastPrice: price },
       currentValue: pos.marketValue,
-      positionDailyGain: pos.currentDayProfitLoss != null ? {
-        gainValue:       pos.currentDayProfitLoss,
-        gainPercentage:  pos.currentDayProfitLossPercentage || 0,
-      } : null,
+      positionDailyGain: (() => {
+        const netChange = pos.instrument.netChange;
+        if (netChange == null) return null;
+        const gainValue = netChange * qty;
+        const prevClose = price - netChange;
+        const gainPct   = prevClose > 0 ? (netChange / prevClose) * 100 : 0;
+        return { gainValue, gainPercentage: gainPct };
+      })(),
       costBasis: costTotal > 0 ? {
         gainValue,
         gainPercentage: gainPct,
@@ -109,9 +71,11 @@ function normalizeAccount(raw) {
   const equityMap = {};
   for (const pos of positions) {
     const key =
-      pos.instrument.type === 'EQUITY' ? 'STOCK'  :
-      pos.instrument.type === 'BOND'   ? 'BONDS'  :
-      pos.instrument.type === 'CRYPTO' ? 'CRYPTO' : 'STOCK';
+      pos.instrument.type === 'ETF'         ? 'ETF'         :
+      pos.instrument.type === 'MUTUAL_FUND' ? 'MUTUAL_FUND' :
+      pos.instrument.type === 'BOND'        ? 'BONDS'       :
+      pos.instrument.type === 'CRYPTO'      ? 'CRYPTO'      :
+      pos.instrument.type === 'CASH_EQ'     ? 'CASH'        : 'STOCK';
     equityMap[key] = (equityMap[key] || 0) + pos.currentValue;
   }
   const cash = sa.currentBalances?.cashBalance || 0;
@@ -142,7 +106,7 @@ function normalizeAccount(raw) {
 // ── GET /api/schwab/status ────────────────────────────────────────────────────
 router.get('/status', (_req, res) => {
   res.json({
-    authorized:  !!tokenCache.refreshToken,
+    authorized:  isAuthorized(),
     configured:  !!(CLIENT_ID && CLIENT_SECRET),
   });
 });
@@ -186,13 +150,157 @@ router.get('/callback', async (req, res) => {
     }
 
     const data = await tokenRes.json();
-    tokenCache.accessToken     = data.access_token;
-    tokenCache.refreshToken    = data.refresh_token;
-    tokenCache.accessExpiresAt = Date.now() + (data.expires_in - 60) * 1000;
+    setTokens(data);
 
     res.redirect(`${CLIENT_URL}?schwab=connected`);
   } catch (err) {
     res.status(502).send(`OAuth error: ${err.message}`);
+  }
+});
+
+// ── GET /api/schwab/account-numbers — returns [{accountNumber, hashValue}] ─────
+router.get('/account-numbers', async (req, res) => {
+  if (!CLIENT_ID || !CLIENT_SECRET) {
+    return res.status(500).json({ error: 'Schwab API credentials are not configured.' });
+  }
+  let token;
+  try { token = await getAccessToken(); } catch (err) { return sendError(res, err); }
+
+  try {
+    const apiRes = await fetch(`${TRADER_BASE}/accounts/accountNumbers`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!apiRes.ok) {
+      let detail;
+      try { detail = await apiRes.json(); } catch { detail = await apiRes.text(); }
+      return sendError(res, Object.assign(new Error(`Schwab API ${apiRes.status}`), { status: apiRes.status, detail }));
+    }
+    res.json(await apiRes.json());
+  } catch (err) {
+    sendError(res, err);
+  }
+});
+
+// ── GET /api/schwab/accounts/:accountHash/transactions ────────────────────────
+const MAX_YEARS = 20;
+
+async function fetchTransactionWindow(token, accountHash, windowStart, windowEnd) {
+  const params = new URLSearchParams({ startDate: windowStart, endDate: windowEnd });
+  const apiRes = await fetch(
+    `${TRADER_BASE}/accounts/${accountHash}/transactions?${params}`,
+    { headers: { Authorization: `Bearer ${token}` } },
+  );
+  if (!apiRes.ok) {
+    let detail;
+    try { detail = await apiRes.json(); } catch { detail = await apiRes.text(); }
+    throw Object.assign(new Error(`Schwab API ${apiRes.status}`), { status: apiRes.status, detail });
+  }
+  return apiRes.json();
+}
+
+// Merge two transaction arrays, deduplicating by activityId
+function mergeTransactions(existing, incoming) {
+  const seen = new Set(existing.map((t) => t.activityId));
+  return [...existing, ...incoming.filter((t) => !seen.has(t.activityId))];
+}
+
+// Normalise a string for loose comparison
+function normalise(s) {
+  return (s || '').toUpperCase().replace(/[^A-Z0-9 ]/g, '').trim();
+}
+
+// Return true if a transaction involves the given symbol or instrument name
+function matchesSymbol(t, symbol, name) {
+  // Direct symbol match (works for trades, transfers, etc.)
+  if (t.transactionItem?.instrument?.symbol === symbol) return true;
+  if (t.transferItems?.some((i) => i.instrument?.symbol === symbol)) return true;
+
+  // Dividends only carry the fund name in `description` — match against it.
+  // Require ALL significant words from the instrument name to appear in the
+  // description so that e.g. "Vanguard Small-Cap ETF" doesn't match "Mega Cap ETF".
+  if (t.type === 'DIVIDEND_OR_INTEREST' && name) {
+    const desc  = normalise(t.description);
+    const parts = normalise(name).split(' ').filter((w) => w.length > 2);
+    if (parts.length > 0 && parts.every((w) => desc.includes(w))) return true;
+  }
+
+  return false;
+}
+
+router.get('/accounts/:accountHash/transactions', async (req, res) => {
+  if (!CLIENT_ID || !CLIENT_SECRET) {
+    return res.status(500).json({ error: 'Schwab API credentials are not configured.' });
+  }
+
+  let token;
+  try {
+    token = await getAccessToken();
+  } catch (err) {
+    return sendError(res, err);
+  }
+
+  const { accountHash } = req.params;
+  const { symbol, name } = req.query;
+
+  try {
+    const db = getDB();
+    // Cache keyed by accountHash only — covers all symbols
+    const col = db.collection('transaction_history');
+    const cached = await col.findOne({ accountHash, perAccount: true });
+
+    const now = new Date();
+    const oneYearAgo = new Date(now);
+    oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+
+    // Always refresh the past year to pick up new transactions
+    const recentRaw = await fetchTransactionWindow(token, accountHash, oneYearAgo.toISOString(), now.toISOString());
+    const recentItems = Array.isArray(recentRaw) ? recentRaw : [];
+
+    let allTransactions;
+
+    if (cached) {
+      allTransactions = mergeTransactions(cached.transactions, recentItems);
+      await col.updateOne(
+        { accountHash, perAccount: true },
+        { $set: { transactions: allTransactions, lastUpdated: now } },
+      );
+    } else {
+      // No cache — paginate backwards year by year
+      allTransactions = [...recentItems];
+      let windowEnd = oneYearAgo;
+      let consecutiveEmpty = 0;
+
+      for (let i = 0; i < MAX_YEARS - 1; i++) {
+        const windowStart = new Date(windowEnd);
+        windowStart.setFullYear(windowStart.getFullYear() - 1);
+
+        const batch = await fetchTransactionWindow(token, accountHash, windowStart.toISOString(), windowEnd.toISOString());
+        const items = Array.isArray(batch) ? batch : [];
+        allTransactions.push(...items);
+
+        if (items.length === 0) {
+          if (++consecutiveEmpty >= 2) break;
+        } else {
+          consecutiveEmpty = 0;
+        }
+        windowEnd = windowStart;
+      }
+
+      await col.updateOne(
+        { accountHash, perAccount: true },
+        { $set: { accountHash, perAccount: true, transactions: allTransactions, lastUpdated: now } },
+        { upsert: true },
+      );
+    }
+
+    // Filter by symbol in memory — reliable across all transaction types
+    const filtered = symbol
+      ? allTransactions.filter((t) => matchesSymbol(t, symbol, name))
+      : allTransactions;
+
+    res.set('Cache-Control', 'no-store').json(filtered);
+  } catch (err) {
+    sendError(res, err);
   }
 });
 
@@ -222,6 +330,15 @@ router.get('/positions', async (req, res) => {
 
     const raw = await apiRes.json();
     const accounts = (Array.isArray(raw) ? raw : []).map(normalizeAccount);
+
+    const symbols = accounts.flatMap((a) =>
+      (a.portfolio.positions ?? [])
+        .filter((p) => !['CASH_EQ', 'OPTION'].includes(p.instrument.type))
+        .map((p) => p.instrument.symbol)
+        .filter(Boolean),
+    );
+    addSymbols(symbols, 'schwab').catch(() => {});
+
     res.json({ accounts });
   } catch (err) {
     sendError(res, err);
