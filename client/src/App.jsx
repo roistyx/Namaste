@@ -1,11 +1,15 @@
 import { useState } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { getMostActive, getSentiment } from './api/stocks';
-import StockCard from './components/StockCard';
+import StockCard     from './components/StockCard';
 import HamburgerMenu from './components/HamburgerMenu';
-import ThemeToggle from './components/ThemeToggle';
+import ThemeToggle   from './components/ThemeToggle';
 import PositionsPage from './components/PositionsPage';
-import AlertsPage from './components/AlertsPage';
-import TerminalPage from './components/TerminalPage';
+import AlertsPage    from './components/AlertsPage';
+import VisualsPage   from './components/VisualsPage';
+import SectorListPage  from './components/SectorListPage';
+import FundTypePage    from './components/FundTypePage';
+import TerminalPage  from './components/TerminalPage';
 import './App.css';
 
 function Dashboard() {
@@ -127,16 +131,25 @@ function Dashboard() {
 }
 
 export default function App() {
-  const [page, setPage] = useState('Dashboard');
-
   return (
-    <div className="app">
-      <HamburgerMenu active={page} onNavigate={setPage} />
-      <ThemeToggle />
-      {page === 'Positions' ? <PositionsPage /> :
-       page === 'Alerts'    ? <AlertsPage />    :
-       page === 'Terminal'  ? <TerminalPage />  :
-       <Dashboard />}
-    </div>
+    <BrowserRouter>
+      <div className="app">
+        <HamburgerMenu />
+        <ThemeToggle />
+        <Routes>
+          <Route path="/"          element={<Dashboard />} />
+          <Route path="/positions" element={<PositionsPage />} />
+          <Route path="/alerts"    element={<AlertsPage />} />
+          <Route path="/terminal"  element={<TerminalPage />} />
+          <Route path="/visuals"   element={<VisualsPage />}>
+            <Route index                element={<Navigate to="breakdown" replace />} />
+            <Route path="breakdown"     element={<VisualsPage.Breakdown />} />
+            <Route path="sectors"       element={<SectorListPage />} />
+            <Route path="fundtypes"     element={<FundTypePage />} />
+          </Route>
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }
