@@ -1,0 +1,220 @@
+/* ── Page layout ─────────────────────────────────────────────────────────── */
+.vis-page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 3rem;
+}
+
+/* ── Header ──────────────────────────────────────────────────────────────── */
+.vis-header {
+  position: relative;
+  text-align: center;
+  padding: 2rem 1rem 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.vis-header-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(99,102,241,0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.vis-title {
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--text-hi, #e8eaf6);
+  margin: 0;
+}
+
+.vis-title-accent {
+  background: linear-gradient(135deg, #818cf8, #06b6d4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Tabs ────────────────────────────────────────────────────────────────── */
+.vis-tabs {
+  display: flex;
+  gap: 0.25rem;
+  border-bottom: 1px solid var(--border, #1e2140);
+  margin-bottom: 1.75rem;
+  padding-bottom: 0;
+}
+
+.vis-tab {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 0.6rem 1.1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-mid, #5a6080);
+  cursor: pointer;
+  margin-bottom: -1px;
+  transition: color 0.15s, border-color 0.15s;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.vis-tab:hover { color: var(--text, #c8cadf); }
+
+.vis-tab--active {
+  color: #818cf8;
+  border-bottom-color: #818cf8;
+}
+
+/* ── Body ────────────────────────────────────────────────────────────────── */
+.vis-body { min-height: 300px; }
+
+.vis-loading {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  justify-content: center;
+  padding: 4rem 0;
+  color: var(--text-mid, #5a6080);
+  font-size: 0.9rem;
+}
+
+.vis-spinner {
+  width: 20px; height: 20px;
+  border: 2px solid var(--border, #1e2140);
+  border-top-color: #818cf8;
+  border-radius: 50%;
+  animation: vis-spin 0.7s linear infinite;
+}
+
+@keyframes vis-spin { to { transform: rotate(360deg); } }
+
+.vis-error,
+.vis-empty {
+  text-align: center;
+  color: var(--text-mid, #5a6080);
+  padding: 3rem 0;
+  font-size: 0.9rem;
+}
+.vis-error { color: #f87171; }
+
+/* ── Card ────────────────────────────────────────────────────────────────── */
+.vis-card {
+  background: var(--bg-card, #14162a);
+  border: 1px solid var(--border, #1e2140);
+  border-radius: 14px;
+  padding: 1.5rem 1.5rem 1.25rem;
+}
+
+.vis-card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-hi, #e8eaf6);
+  margin: 0 0 0.2rem;
+}
+
+.vis-card-sub {
+  font-size: 0.78rem;
+  color: var(--text-mid, #5a6080);
+  margin: 0 0 1.25rem;
+}
+
+/* ── Chart ───────────────────────────────────────────────────────────────── */
+.vis-chart-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.vis-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+
+.vis-axis-label {
+  font-size: 10px;
+  fill: var(--text-mid, #5a6080);
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.vis-axis-label--x {
+  font-size: 11px;
+  fill: var(--text, #c8cadf);
+  font-weight: 500;
+}
+
+.vis-axis-label--sub {
+  font-size: 9.5px;
+  fill: var(--text-mid, #5a6080);
+}
+
+.vis-bar-seg:hover { opacity: 0.85; }
+
+/* ── Tooltip ─────────────────────────────────────────────────────────────── */
+.vis-tooltip {
+  position: absolute;
+  pointer-events: none;
+  background: var(--bg-panel, #0f1120);
+  border: 1px solid var(--border, #1e2140);
+  border-radius: 8px;
+  padding: 0.55rem 0.75rem;
+  min-width: 150px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  z-index: 10;
+}
+
+.vis-tt-header {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-hi, #e8eaf6);
+  margin-bottom: 0.4rem;
+}
+
+.vis-tt-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.vis-tt-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.78rem;
+  color: var(--text, #c8cadf);
+  line-height: 1.6;
+}
+
+.vis-tt-val { font-weight: 600; color: var(--text-hi, #e8eaf6); }
+.vis-tt-dim { color: var(--text-mid, #5a6080); }
+
+/* ── Legend ──────────────────────────────────────────────────────────────── */
+.vis-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border, #1e2140);
+}
+
+.vis-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.vis-legend-dot {
+  width: 9px; height: 9px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.vis-legend-label {
+  font-size: 0.78rem;
+  color: var(--text, #c8cadf);
+}

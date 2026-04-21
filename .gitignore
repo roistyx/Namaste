@@ -19,6 +19,9 @@ dist-ssr
 # TLS certificates
 *.pem
 
+# PhotoRec recovery artifacts
+photorec.se2
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
