@@ -1,0 +1,281 @@
+/* ── Root ───────────────────────────────────────────────── */
+.trm-root {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 0px);
+  background: var(--bg);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.82rem;
+  overflow: hidden;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+/* ── Screen area ────────────────────────────────────────── */
+.trm-screen {
+  flex: 1;
+  overflow-y: auto;
+  padding: 72px 24px 20px;
+}
+
+/* ── Idle screen ────────────────────────────────────────── */
+.trm-idle { padding-top: 40px; }
+
+.trm-idle-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  letter-spacing: 0.04em;
+  color: var(--text-hi);
+  margin-bottom: 6px;
+}
+
+.trm-idle-subtitle {
+  color: var(--text-mid);
+  margin-bottom: 32px;
+  font-size: 0.78rem;
+}
+
+.trm-idle-cmds {
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+}
+
+.trm-idle-cmd-row {
+  display: flex;
+  gap: 24px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--border-sub);
+}
+
+.trm-cmd-name {
+  color: #818cf8;
+  font-weight: bold;
+  min-width: 80px;
+}
+
+.trm-cmd-desc { color: var(--text-mid); }
+
+/* ── Panel (PRTU screens) ───────────────────────────────── */
+.trm-panel { padding-top: 8px; }
+
+.trm-panel-breadcrumb {
+  font-size: 0.68rem;
+  color: var(--text-lo);
+  letter-spacing: 0.04em;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.trm-panel-title {
+  font-size: 0.85rem;
+  font-weight: bold;
+  letter-spacing: 0.04em;
+  color: var(--text-hi);
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 8px;
+}
+
+.trm-tag {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-mid);
+  font-size: 0.6rem;
+  padding: 1px 6px;
+  letter-spacing: 0.04em;
+}
+
+/* ── Form ───────────────────────────────────────────────── */
+.trm-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 520px;
+}
+
+.trm-form-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.trm-label {
+  color: var(--text-mid);
+  font-size: 0.78rem;
+  min-width: 140px;
+  text-align: right;
+}
+
+.trm-field {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border-hover);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.82rem;
+  padding: 4px 2px;
+  outline: none;
+  width: 260px;
+  caret-color: #818cf8;
+  transition: border-color 0.2s;
+}
+
+.trm-field::placeholder { color: var(--text-dimmer); }
+.trm-field:focus         { border-bottom-color: #818cf8; color: var(--text-hi); }
+
+.trm-select {
+  appearance: none;
+  cursor: pointer;
+  color: var(--text-hi);
+}
+
+.trm-select option {
+  background: var(--bg-card);
+  color: var(--text-hi);
+}
+
+.trm-form-actions {
+  margin-top: 32px;
+  display: flex;
+  justify-content: flex-end;
+  max-width: 520px;
+}
+
+/* ── Buttons ────────────────────────────────────────────── */
+.trm-go-btn {
+  background: #6366f1;
+  color: #fff;
+  border: none;
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: bold;
+  padding: 6px 18px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.trm-go-btn:hover:not(:disabled)  { background: #818cf8; }
+.trm-go-btn:disabled               { opacity: 0.4; cursor: default; }
+
+/* ── Error ──────────────────────────────────────────────── */
+.trm-error {
+  color: #f87171;
+  font-size: 0.78rem;
+  margin-top: 12px;
+}
+
+/* ── Holdings table ─────────────────────────────────────── */
+.trm-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 0;
+  font-size: 0.8rem;
+}
+
+.trm-table th {
+  color: var(--text-lo);
+  font-size: 0.6rem;
+  letter-spacing: 0.06em;
+  font-weight: normal;
+  border-bottom: 1px solid var(--border);
+  padding: 4px 8px 6px;
+  text-align: left;
+}
+
+.trm-table th.trm-num,
+.trm-table td.trm-num { text-align: right; }
+
+.trm-table td {
+  padding: 5px 8px;
+  border-bottom: 1px solid var(--border-sub);
+  color: var(--text);
+  font-family: monospace;
+  font-size: 0.78rem;
+}
+
+.trm-ticker { color: #818cf8; font-weight: bold; font-family: monospace; }
+.trm-dim    { color: var(--text-dim); }
+.trm-empty  { color: var(--text-dimmer); font-style: italic; padding: 12px 8px; font-family: inherit; }
+
+/* ── Add holding row ────────────────────────────────────── */
+.trm-add-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0 0;
+  border-top: 1px dashed var(--border);
+  margin-top: 2px;
+}
+
+.trm-add-arrow { color: #818cf8; padding: 0 4px 0 8px; }
+
+.trm-add-field  { width: auto; }
+.trm-field-ticker { width: 90px; font-family: monospace; }
+.trm-field-num    { width: 90px; font-family: monospace; }
+
+.trm-add-btn {
+  background: transparent;
+  border: 1px solid var(--border-hover);
+  color: var(--text-mid);
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: bold;
+  padding: 4px 12px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.trm-add-btn:hover:not(:disabled) {
+  background: var(--bg-hover);
+  border-color: #818cf8;
+  color: #818cf8;
+}
+.trm-add-btn:disabled { opacity: 0.4; cursor: default; }
+
+/* ── Command bar ────────────────────────────────────────── */
+.trm-cmdbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: var(--bg-panel);
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.trm-prompt { color: #818cf8; font-weight: bold; }
+
+.trm-cmd-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-hi);
+  font-family: inherit;
+  font-size: 0.82rem;
+  outline: none;
+  caret-color: #818cf8;
+}
+
+.trm-cmd-input::placeholder { color: var(--text-dimmer); }
+.trm-cmd-input:disabled     { opacity: 0.3; }
+
+.trm-go-main { flex-shrink: 0; }
+
+/* ── Function key bar ───────────────────────────────────── */
+.trm-fnkeys {
+  display: flex;
+  background: var(--bg-panel);
+  border-top: 1px solid var(--border-sub);
+  flex-shrink: 0;
+}
+
+.trm-fnkeys span {
+  color: var(--text-btn-dim);
+  font-size: 0.68rem;
+  padding: 4px 14px;
+  border-right: 1px solid var(--border-sub);
+}
+
+.trm-fn-active { color: #818cf8 !important; }

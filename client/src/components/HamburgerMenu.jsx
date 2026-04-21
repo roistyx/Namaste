@@ -7,6 +7,7 @@ const NAV_ITEMS = [
   { icon: '◎', label: 'Markets' },
   { icon: '◈', label: 'Positions' },
   { icon: '🤖', label: 'Alerts' },
+  { icon: '▪', label: 'Terminal' },
   { icon: '⚙', label: 'Settings' },
 ];
 

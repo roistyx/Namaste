@@ -5,6 +5,7 @@ import HamburgerMenu from './components/HamburgerMenu';
 import ThemeToggle from './components/ThemeToggle';
 import PositionsPage from './components/PositionsPage';
 import AlertsPage from './components/AlertsPage';
+import TerminalPage from './components/TerminalPage';
 import './App.css';
 
 function Dashboard() {
@@ -134,6 +135,7 @@ export default function App() {
       <ThemeToggle />
       {page === 'Positions' ? <PositionsPage /> :
        page === 'Alerts'    ? <AlertsPage />    :
+       page === 'Terminal'  ? <TerminalPage />  :
        <Dashboard />}
     </div>
   );
