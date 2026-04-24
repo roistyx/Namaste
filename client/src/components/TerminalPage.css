@@ -279,3 +279,199 @@
 }
 
 .trm-fn-active { color: #818cf8 !important; }
+
+/* ── EQUITY key (yellow, Bloomberg-style) ──────────────────── */
+.trm-equity-btn {
+  background: #b45309;
+  color: #fef3c7;
+  border: none;
+  font-family: inherit;
+  font-size: 0.72rem;
+  font-weight: bold;
+  padding: 5px 13px;
+  cursor: pointer;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+.trm-equity-btn:hover:not(:disabled) { background: #d97706; color: #000; }
+.trm-equity-btn:disabled             { opacity: 0.3; cursor: default; }
+
+/* ── EQUITY inline tag (breadcrumb + idle screen + cmd bar) ─── */
+.trm-eq-tag {
+  display: inline-block;
+  background: #b45309;
+  color: #fef3c7;
+  font-size: 0.58rem;
+  font-weight: bold;
+  padding: 1px 5px;
+  letter-spacing: 0.05em;
+  vertical-align: middle;
+}
+
+.trm-eq-inline {
+  display: inline-block;
+  background: #b45309;
+  color: #fef3c7;
+  font-size: 0.6rem;
+  font-weight: bold;
+  padding: 1px 5px;
+  letter-spacing: 0.05em;
+  vertical-align: middle;
+}
+
+/* ── EQ command bar prefix tag ─────────────────────────────── */
+.trm-eq-cmdtag {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--text-mid);
+  font-size: 0.78rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+  padding-right: 4px;
+  border-right: 1px solid var(--border);
+  margin-right: 4px;
+}
+
+/* ── Error row below command bar ───────────────────────────── */
+.trm-cmdbar-error {
+  background: var(--bg-panel);
+  color: #f87171;
+  font-size: 0.72rem;
+  padding: 3px 16px 4px;
+  border-top: 1px solid var(--border-sub);
+  flex-shrink: 0;
+}
+
+/* ── Loading / error placeholder ──────────────────────────── */
+.trm-loading {
+  color: var(--text-mid);
+  font-size: 0.82rem;
+  padding: 40px 0;
+  letter-spacing: 0.05em;
+}
+
+/* ── EQ: header (name + live price) ───────────────────────── */
+.trm-eq-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.trm-eq-name {
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--text-hi);
+  letter-spacing: 0.02em;
+  margin-bottom: 4px;
+}
+
+.trm-eq-meta {
+  font-size: 0.7rem;
+  color: var(--text-mid);
+}
+
+.trm-eq-price-block { text-align: right; }
+
+.trm-eq-price {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--text-hi);
+  font-family: monospace;
+  margin-bottom: 3px;
+}
+
+.trm-pos { color: #4ade80; font-size: 0.78rem; }
+.trm-neg { color: #f87171; font-size: 0.78rem; }
+
+/* ── EQ: DES key-value grid ────────────────────────────────── */
+.trm-eq-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  max-width: 620px;
+  margin-bottom: 24px;
+}
+
+.trm-eq-kv {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  padding: 5px 8px;
+  border-bottom: 1px solid var(--border-sub);
+}
+
+.trm-eq-kv-full { grid-column: span 2; }
+
+.trm-eq-k {
+  color: var(--text-lo);
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+  min-width: 96px;
+  flex-shrink: 0;
+}
+
+.trm-eq-v {
+  color: var(--text);
+  font-family: monospace;
+  font-size: 0.78rem;
+}
+
+.trm-eq-url { color: var(--text-mid); }
+
+/* ── EQ: function hint footer ──────────────────────────────── */
+.trm-eq-fn-hint {
+  margin-top: 20px;
+  color: var(--text-lo);
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+}
+.trm-eq-fn-hint strong { color: #818cf8; }
+
+/* ── EQ: FA price mini-header ──────────────────────────────── */
+.trm-eq-fa-header {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.trm-eq-fa-price {
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--text-hi);
+  font-family: monospace;
+}
+
+/* ── EQ: FA metrics grid ───────────────────────────────────── */
+.trm-fa-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  max-width: 680px;
+  margin-bottom: 24px;
+}
+
+.trm-fa-row {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border-sub);
+  border-right: 1px solid var(--border-sub);
+}
+
+.trm-fa-k {
+  color: var(--text-lo);
+  font-size: 0.58rem;
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
+}
+
+.trm-fa-v {
+  color: var(--text-hi);
+  font-family: monospace;
+  font-size: 0.85rem;
+  font-weight: bold;
+}

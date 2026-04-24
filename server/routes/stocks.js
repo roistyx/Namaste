@@ -107,4 +107,35 @@ router.get('/weekly/:ticker', async (req, res) => {
   }
 });
 
+// GET /api/stocks/profile/:ticker  — company profile + live quote
+router.get('/profile/:ticker', async (req, res) => {
+  if (!API_KEY) return res.status(500).json({ error: 'FINNHUB_API_KEY not configured' });
+  const { ticker } = req.params;
+  try {
+    const [profileRes, quoteRes] = await Promise.all([
+      fetch(`${BASE}/stock/profile2?symbol=${ticker}&token=${API_KEY}`),
+      fetch(`${BASE}/quote?symbol=${ticker}&token=${API_KEY}`),
+    ]);
+    const profile = await profileRes.json();
+    const quote   = await quoteRes.json();
+    if (!profile.name) return res.status(404).json({ error: `UNKNOWN SECURITY: ${ticker}` });
+    res.json({ profile, quote });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// GET /api/stocks/fundamentals/:ticker  — key metrics (P/E, EPS, 52W, beta, …)
+router.get('/fundamentals/:ticker', async (req, res) => {
+  if (!API_KEY) return res.status(500).json({ error: 'FINNHUB_API_KEY not configured' });
+  const { ticker } = req.params;
+  try {
+    const r = await fetch(`${BASE}/stock/metric?symbol=${ticker}&metric=all&token=${API_KEY}`);
+    if (!r.ok) return res.status(r.status).json({ error: 'Finnhub error' });
+    res.json(await r.json());
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
 export default router;
