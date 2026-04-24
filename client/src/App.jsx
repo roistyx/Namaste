@@ -9,6 +9,7 @@ import AlertsPage    from './components/AlertsPage';
 import VisualsPage   from './components/VisualsPage';
 import SectorListPage  from './components/SectorListPage';
 import FundTypePage    from './components/FundTypePage';
+import TerminalPage  from './components/TerminalPage';
 import './App.css';
 
 function Dashboard() {
@@ -139,6 +140,7 @@ export default function App() {
           <Route path="/"          element={<Dashboard />} />
           <Route path="/positions" element={<PositionsPage />} />
           <Route path="/alerts"    element={<AlertsPage />} />
+          <Route path="/terminal"  element={<TerminalPage />} />
           <Route path="/visuals"   element={<VisualsPage />}>
             <Route index                element={<Navigate to="breakdown" replace />} />
             <Route path="breakdown"     element={<VisualsPage.Breakdown />} />

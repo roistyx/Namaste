@@ -9,6 +9,7 @@ const NAV_ITEMS = [
   { icon: '◈', label: 'Positions', path: '/positions'  },
   { icon: '◉', label: 'Visuals',   path: '/visuals'    },
   { icon: '🤖', label: 'Alerts',   path: '/alerts'     },
+  { icon: '▪', label: 'Terminal',  path: '/terminal'   },
   { icon: '⚙', label: 'Settings', path: '/settings'   },
 ];
 
