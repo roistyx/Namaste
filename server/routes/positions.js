@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { getDB } from '../db.js';
 import { addSymbols } from '../volume-alert/dao/symbolDao.js';
 
 const router = Router();
@@ -66,10 +67,14 @@ router.get('/', async (req, res) => {
     return res.status(500).json({ error: 'PUBLIC_API_SECRET is not configured on the server.' });
   }
 
+  const col = getDB().collection('public_positions');
+
   let token;
   try {
     token = await getAccessToken();
   } catch (err) {
+    const cached = await col.findOne({ _id: 'cache' });
+    if (cached) return res.json({ accounts: cached.accounts, cached: true, cachedAt: cached.savedAt });
     return sendError(res, err);
   }
 
@@ -79,6 +84,8 @@ router.get('/', async (req, res) => {
     const data = await publicGet('/userapigateway/trading/account', token);
     accountList = data.accounts ?? [];
   } catch (err) {
+    const cached = await col.findOne({ _id: 'cache' });
+    if (cached) return res.json({ accounts: cached.accounts, cached: true, cachedAt: cached.savedAt });
     return sendError(res, err);
   }
 
@@ -96,7 +103,6 @@ router.get('/', async (req, res) => {
         );
         return { ...acct, portfolio };
       } catch (err) {
-        // Return partial data rather than failing the whole request
         return { ...acct, portfolio: null, portfolioError: err.message };
       }
     }),
@@ -107,6 +113,12 @@ router.get('/', async (req, res) => {
     return positions.map((p) => p.symbol ?? p.ticker ?? p.instrument?.symbol).filter(Boolean);
   });
   addSymbols(symbols, 'public').catch(() => {});
+
+  await col.updateOne(
+    { _id: 'cache' },
+    { $set: { _id: 'cache', accounts: portfolios, savedAt: new Date() } },
+    { upsert: true },
+  );
 
   res.json({ accounts: portfolios });
 });

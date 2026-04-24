@@ -56,6 +56,32 @@
   color: #818cf8;
 }
 
+.inst-tab-group {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.schwab-connect-tab-btn {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: rgba(245, 158, 11, 0.12);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  border-radius: 99px;
+  padding: 0.15rem 0.55rem;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
+}
+
+.schwab-connect-tab-btn:hover {
+  background: rgba(245, 158, 11, 0.22);
+  color: #fbbf24;
+}
+
 .inst-tab-badge {
   font-size: 0.6rem;
   font-weight: 700;
@@ -152,6 +178,30 @@
   font-size: 0.8rem;
   color: #f87171;
   margin: 0;
+}
+
+.schwab-live-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #34d399;
+  margin-bottom: 0.75rem;
+}
+
+.schwab-live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #34d399;
+  box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.5);
+  animation: live-pulse 2s ease-in-out infinite;
+}
+
+@keyframes live-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.5); }
+  50%       { box-shadow: 0 0 0 5px rgba(52, 211, 153, 0); }
 }
 
 .apex-stale-banner {

@@ -310,10 +310,15 @@ router.get('/positions', async (req, res) => {
     return res.status(500).json({ error: 'Schwab API credentials are not configured.' });
   }
 
+  const db = getDB();
+  const col = db.collection('schwab_positions');
+
   let token;
   try {
     token = await getAccessToken();
   } catch (err) {
+    const cached = await col.findOne({ _id: 'cache' });
+    if (cached) return res.json({ accounts: cached.accounts, cached: true, cachedAt: cached.savedAt });
     return sendError(res, err);
   }
 
@@ -325,6 +330,8 @@ router.get('/positions', async (req, res) => {
     if (!apiRes.ok) {
       let detail;
       try { detail = await apiRes.json(); } catch { detail = await apiRes.text(); }
+      const cached = await col.findOne({ _id: 'cache' });
+      if (cached) return res.json({ accounts: cached.accounts, cached: true, cachedAt: cached.savedAt });
       return sendError(res, Object.assign(new Error(`Schwab API ${apiRes.status}`), { status: apiRes.status, detail }));
     }
 
@@ -339,8 +346,16 @@ router.get('/positions', async (req, res) => {
     );
     addSymbols(symbols, 'schwab').catch(() => {});
 
+    await col.updateOne(
+      { _id: 'cache' },
+      { $set: { _id: 'cache', accounts, savedAt: new Date() } },
+      { upsert: true },
+    );
+
     res.json({ accounts });
   } catch (err) {
+    const cached = await col.findOne({ _id: 'cache' });
+    if (cached) return res.json({ accounts: cached.accounts, cached: true, cachedAt: cached.savedAt });
     sendError(res, err);
   }
 });

@@ -799,10 +799,14 @@ export default function PositionsPage() {
   const [publicData, setPublicData] = useState(null);
   const [publicLoading, setPublicLoading] = useState(true);
   const [publicError, setPublicError] = useState("");
+  const [publicCached, setPublicCached] = useState(false);
+  const [publicCachedAt, setPublicCachedAt] = useState(null);
 
   const [schwabData, setSchwabData] = useState(null);
   const [schwabLoading, setSchwabLoading] = useState(true);
   const [schwabError, setSchwabError] = useState("");
+  const [schwabCached, setSchwabCached] = useState(false);
+  const [schwabCachedAt, setSchwabCachedAt] = useState(null);
   const [schwabStatus, setSchwabStatus] = useState({
     authorized: false,
     configured: false,
@@ -830,7 +834,7 @@ export default function PositionsPage() {
 
   useEffect(() => {
     getPositions()
-      .then(setPublicData)
+      .then((d) => { setPublicData(d); setPublicCached(d.cached ?? false); setPublicCachedAt(d.cachedAt ?? null); })
       .catch((e) => setPublicError(e.message))
       .finally(() => setPublicLoading(false));
 
@@ -875,7 +879,7 @@ export default function PositionsPage() {
             })
             .catch(() => {});
           return getSchwabPositions()
-            .then(setSchwabData)
+            .then((d) => { setSchwabData(d); setSchwabCached(d.cached ?? false); setSchwabCachedAt(d.cachedAt ?? null); })
             .catch((e) => setSchwabError(e.message))
             .finally(() => setSchwabLoading(false));
         }
@@ -893,7 +897,7 @@ export default function PositionsPage() {
       setSchwabStatus((s) => ({ ...s, authorized: true }));
       setSchwabLoading(true);
       getSchwabPositions()
-        .then(setSchwabData)
+        .then((d) => { setSchwabData(d); setSchwabCached(d.cached ?? false); setSchwabCachedAt(d.cachedAt ?? null); })
         .catch((e) => setSchwabError(e.message))
         .finally(() => setSchwabLoading(false));
     }
@@ -1143,6 +1147,16 @@ export default function PositionsPage() {
       );
       return (
         <div className="pos-page-body">
+          {publicCached ? (
+            <div className="apex-stale-banner">
+              <span>Showing saved data from {publicCachedAt ? new Date(publicCachedAt).toLocaleString() : "unknown"} — API unavailable.</span>
+            </div>
+          ) : (
+            <div className="schwab-live-banner">
+              <span className="schwab-live-dot" />
+              Live
+            </div>
+          )}
           {accounts.map((a) => (
             <AccountSection
               key={a.accountId}
@@ -1167,6 +1181,17 @@ export default function PositionsPage() {
     );
     return (
       <div className="pos-page-body">
+        {schwabCached ? (
+          <div className="apex-stale-banner">
+            <span>Showing saved data from {schwabCachedAt ? new Date(schwabCachedAt).toLocaleString() : "unknown"} — token expired.</span>
+            <a href="/api/schwab/auth" className="apex-stale-btn">Reconnect</a>
+          </div>
+        ) : (
+          <div className="schwab-live-banner">
+            <span className="schwab-live-dot" />
+            Live
+          </div>
+        )}
         {accounts.map((a) => (
           <AccountSection
             key={a.accountId}
@@ -1227,16 +1252,19 @@ export default function PositionsPage() {
             <span className="inst-tab-count">{publicTotals.activeAccounts}</span>
           )}
         </button>
-        <button
-          className={`inst-tab ${activeTab === "schwab" ? "inst-tab--active" : ""}`}
-          onClick={() => setActiveTab("schwab")}>
-          Schwab
-          {!schwabLoading && schwabStatus.authorized ? (
-            <span className="inst-tab-count">{schwabTotals.activeAccounts}</span>
-          ) : (
-            <span className="inst-tab-badge">Connect</span>
+        <div className="inst-tab-group">
+          <button
+            className={`inst-tab ${activeTab === "schwab" ? "inst-tab--active" : ""}`}
+            onClick={() => setActiveTab("schwab")}>
+            Schwab
+            {!schwabLoading && schwabStatus.authorized && (
+              <span className="inst-tab-count">{schwabTotals.activeAccounts}</span>
+            )}
+          </button>
+          {!schwabLoading && !schwabStatus.authorized && schwabStatus.configured && (
+            <a href="/api/schwab/auth" className="schwab-connect-tab-btn">Connect ↗</a>
           )}
-        </button>
+        </div>
         <button
           className={`inst-tab ${activeTab === "fidelity" ? "inst-tab--active" : ""}`}
           onClick={() => setActiveTab("fidelity")}>
